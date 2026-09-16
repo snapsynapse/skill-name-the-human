@@ -19,11 +19,12 @@ The harvest reads dotfiles, and strangers will run it. From the first commit:
 - It never transmits anything. No network calls exist in any script.
 - It never reads a secret's value. It records that a name like `EVAL_API_KEY` is referenced, never what it holds. The test suite checks that a fixture value cannot appear in the output.
 - It refuses to run with no declared roots. There is no default to your home directory or the current directory. A human names the scope.
+- It runs one external binary. Binary plists are not readable as text, so `plutil -convert json` is invoked on them and its stdout is parsed in memory. Nothing is written, no other subprocess exists, and the same secret-names-only rule applies to what comes back. Where `plutil` is absent the file is excluded with a reason rather than read another way.
 - Every file it opened is listed in the output under `manifest.scanned.paths_read`, so you can see exactly what was touched.
 
 ### Every path it touches
 
-Under each declared root, walked to a depth of six, skipping anything under a config `exclude_paths` entry and the folders `.git`, `node_modules`, `dist`, `build`, `_site`, `vendor`, `.venv`, `venv`, `.next`, `.cache`, `coverage`, `tmp`, `.vercel`, `.claude`, `.codex` (the last two hold whole worktree checkouts; their settings files are read directly, below):
+Under each declared root, walked to a depth of six (the default; `max_depth` in the config overrides it), skipping anything under a config `exclude_paths` entry and the folders `.git`, `node_modules`, `dist`, `build`, `_site`, `vendor`, `.venv`, `venv`, `.next`, `.cache`, `coverage`, `.playwright-mcp`, `tmp`, `.vercel`, `.claude`, `.codex` (the last two hold whole worktree checkouts; their settings files are read directly, below):
 
 | Read | For |
 |---|---|
@@ -31,13 +32,13 @@ Under each declared root, walked to a depth of six, skipping anything under a co
 | `.github/CODEOWNERS`, `CODEOWNERS`, `docs/CODEOWNERS` | the existing owner signal, verbatim |
 | `vercel.json`, and the handler file each cron names | Vercel crons |
 | `.claude/settings.json`, `.claude/settings.local.json`, `.codex/hooks.json` at the root and one level down | project-level harness hooks |
-| `wrangler.toml`, `wrangler.json`, `*.timer`, `*.plist`, `install*.sh`, `setup*.sh`, `bootstrap*.sh`, `.mcp.json` | proposals only; noted, never walked |
+| `wrangler.toml`, `wrangler.json`, `wrangler.jsonc`, `*.timer`, `*.plist`, `install*.sh`, `setup*.sh`, `bootstrap*.sh` (also `.bash`, `.zsh`), `.mcp.json`, `mcp.json` | proposals only; noted, never walked |
 
 Outside the roots, at well-known locations:
 
 | Read | For |
 |---|---|
-| `~/Library/LaunchAgents/*.plist` | launchd agents, kept only when the program path falls under a root or an `include_paths` entry; everything else is listed as excluded with the reason |
+| `~/Library/LaunchAgents/*.plist` (the default; `launch_agents_dir` in the config overrides it) | launchd agents, kept only when the program path falls under a root or an `include_paths` entry; everything else is listed as excluded with the reason |
 | `~/.claude/settings.json`, `~/.claude/settings.local.json`, `~/.codex/hooks.json` | user-level harness hooks |
 
 Nothing else. If you find the harvest reading a path not on this list, that is a bug; open an issue.
@@ -87,6 +88,8 @@ Replace: `~/code/_others` -> a folder under a root you want skipped and recorded
 }
 ```
 
+Three further keys are optional and change what the table above describes, so they are worth knowing before you trust the defaults. `max_depth` sets the walk depth, default six. `launch_agents_dir` relocates the launch agents folder, default `~/Library/LaunchAgents`. `home` relocates the home directory the well-known paths hang off, default the real one. The fixture estate sets all three, which is how the test suite walks a fake estate without touching yours.
+
 Save it as `name-the-human.config.json` next to where you want the output, outside any repository you intend to commit.
 
 Harvest. Reads everything above, writes one file.
@@ -96,6 +99,8 @@ Literal
 ```bash
 node name-the-human/scripts/harvest.mjs --config name-the-human.config.json --out name-the-human.harvest.json
 ```
+
+Add `--dry-run` to that command to print the result to stdout and write nothing, which is the honest way to see what it would read before you let it write.
 
 Judge. Open the harvest file in the harness of your choice with `SKILL.md` loaded, or paste `references/prompt.md` into any chat window. Save the result as `name-the-human.json`. Then check that the machine stayed on its side of the line:
 
@@ -149,7 +154,7 @@ The named-owner rule itself is older than this repo. Sam Rogers published it in 
 
 ## Tested with
 
-Claude Code and OpenAI Codex, on one macOS estate, by the author. Nothing more has been run. If it works for you elsewhere, or does not, say so in an issue.
+Claude Code and OpenAI Codex, on one macOS estate, by the author. Schema v0.3 has not been exercised from Codex since the bump; `MANIFEST.yaml` records what was run where. Nothing more has been run. If it works for you elsewhere, or does not, say so in an issue.
 
 ## Credit
 

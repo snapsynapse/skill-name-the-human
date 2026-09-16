@@ -4,7 +4,7 @@ Owns purpose, boundaries and exceptions for this repository. Decisions scoped to
 
 ## What this product is
 
-A deployer-side accountability inventory for automated and AI systems, packaged as an agent skill with three deterministic scripts. It produces one JSON file against a versioned schema (`name-the-human/v0.3`) and renders it as a one-page table with nine columns and four totals. The machine harvests candidate surfaces and judges their reach; a human, alone, fills the fields that name a person and a fallback and say whether that person can stop the thing.
+A deployer-side accountability inventory for automated and AI systems, packaged as an agent skill with three deterministic scripts (harvest, validate, render) and two that keep them honest (a test suite and a manifest checker). It produces one JSON file against a versioned schema (`name-the-human/v0.3`) and renders it as a one-page table with nine columns and four totals. The machine harvests candidate surfaces and judges their reach; a human, alone, fills the fields that name a person and a fallback and say whether that person can stop the thing.
 
 ## Why it exists
 
@@ -24,7 +24,7 @@ Nobody had joined a named individual, a named fallback and verified unilateral s
 
 ## Scope boundaries
 
-In scope for v0.1: four location classes (GitHub Actions schedules, Vercel crons, launchd agents, harness hooks for Claude Code and Codex), the schema, the three scripts plus render, a synthetic example, and the model-agnostic prompt for INTERVIEW mode.
+In scope for v0.1: four location classes (GitHub Actions schedules, Vercel crons, launchd agents, harness hooks for Claude Code and Codex), the schema, the five scripts, a synthetic example, and the model-agnostic prompt for INTERVIEW mode.
 
 Out of scope, by decision on 2026-09-15: an npm package, an MCP server, a docs site, a custom domain, a GitHub Action marketplace listing. Distribution comes back if someone other than the author asks. MCP server registrations, SaaS automations (Zapier, Substack, Resend schedules), Cloudflare Workers cron triggers and systemd timers are proposals, not classes, until a second estate needs them.
 
@@ -46,14 +46,17 @@ N/A because this is a tool with a schema, not an open specification. The schema 
 
 ## Relationships to other PAICE standards
 
-Non-binding. Skill Provenance tracks the bundle's version, hashes and changelog (`name-the-human/MANIFEST.yaml`). The repo layout follows `skill-a11y-audit` so repo-standards conformance is inherited rather than retrofitted. AIDR and Turnfile are adjacent (a decision record and a session protocol) and neither is integrated. EveryAILaw's Article 14 and Article 26 records are the citations the README points at.
+Non-binding. Skill Provenance tracks the bundle's version, hashes and changelog (`name-the-human/MANIFEST.yaml`). The repo layout follows `skill-a11y-audit` so repo-standards conformance is inherited rather than retrofitted. AIDR and Turnfile are adjacent (a decision record and a session protocol) and neither is integrated. The README cites EU AI Act Article 14 and Article 26 directly rather than through EveryAILaw records; EveryAILaw is not an adopted dependency of this repo.
 
 ## Exceptions to Repo Standards
 
 - `CHANGELOG.md` lives in the bundle (`name-the-human/CHANGELOG.md`) rather than at the repo root, matching `skill-a11y-audit` and the Skill Provenance convention that the changelog travels with the bundle.
 - No `CONTRIBUTING.md`, `SPONSORS.md`, docs site, `llms.txt` or `assistant-guide.txt`: not hosted, by decision above. Revisit if a hosted surface is added.
+- The skill bundle sits at `name-the-human/` at the repo root rather than under `skills/` or as a root `SKILL.md`, matching `skill-a11y-audit`'s `a11y-audit/` shape. Repo Standards v0.9 codifies only the other two patterns; two repos now use this one.
+- `PROJECT_CONTEXT.md` is at the repo root rather than inside the bundle, matching `aidr`, `turnfile`, `sigsubshow`, `ai-tool-watch` and `PAICE2`.
 - `.gitignore` carries a negation for `name-the-human/assets/**/.claude/` and `.codex/` because the fixture estate must use the real file names the harvest looks for.
 
 ## Changelog
 
-- 2026-09-15: Repository created from the Ep 12 handoff. Schema v0.3, the four scripts, fixture estate, synthetic examples, SKILL.md, prompt, README with the privacy statement and prior art. Version 0.1. Decisions recorded above: MIT, `skill-a11y-audit` layout, no distribution surfaces, real inventory never committed, method registration deferred to the two-instances rule.
+- 2026-09-15: Repository created from the Ep 12 handoff. Schema v0.3, the five scripts, fixture estate, synthetic examples, SKILL.md, prompt, README with the privacy statement and prior art. Version 0.1. Decisions recorded above: MIT, `skill-a11y-audit` layout, no distribution surfaces, real inventory never committed, method registration deferred to the two-instances rule.
+- 2026-09-15: Audit pass (repo-standards, repo-hygiene, agent-readiness, doc-audit). Schema `$id` repointed from a `blob/` URL to a raw dereferenceable one; README corrected against `harvest.mjs` (three optional config keys, the `plutil` subprocess, `.playwright-mcp` in the skip list, the full proposal globs, `--dry-run`); `SKILL.md` column count corrected to five and `manifest.mjs` added to Files; script counts reconciled to five; the EveryAILaw citation claim softened to match what the README actually cites; `PROJECT_CONTEXT.md` added; `.perplexity-research/` ignored.

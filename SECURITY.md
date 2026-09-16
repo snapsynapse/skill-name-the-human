@@ -8,6 +8,7 @@ This tool reads dotfiles and settings files on the machine it runs on. That is i
 - No network calls in any script.
 - Secret names only, never values. `EnvironmentVariables` in a plist contributes its keys; `secrets.NAME` in a workflow contributes `NAME`; a handler's `process.env.NAME` contributes `NAME`.
 - No default scope. The harvest refuses to run without declared roots.
+- One external binary, `plutil`, for binary plists only. Invoked as `plutil -convert json -o - <file>`, stdout parsed in memory, nothing written. If it is unavailable the file is excluded with a reason. No other subprocess is spawned.
 - Every file opened is listed in the output.
 
 ## Reporting

@@ -50,7 +50,7 @@ A surface counts if something acts on its output without a human deciding first.
 3. **Judge.** Copy the harvest file to `name-the-human.json` and fill the judgment fields, one surface at a time, from the `provenance` excerpt and the files it points at. Rules below.
 4. **Validate.** `node scripts/validate.mjs name-the-human.json --stage judged`. Fix every error. The stage check fails if any human field is non-null; that is the boundary working.
 5. **Render.** `node scripts/render.mjs name-the-human.json --out name-the-human.md`.
-6. **Stop.** Tell the user the table is ready and that the four columns on the right are theirs. The human pass is not yours to start, and you do not offer to start it.
+6. **Stop.** Tell the user the table is ready and that the five columns on the right are theirs. The human pass is not yours to start, and you do not offer to start it.
 
 On a later run, `node scripts/validate.mjs name-the-human.json --diff previous.json` reports surfaces added, surfaces gone, and rows whose name, fallback, verdict, schedule or stop mechanism changed. A re-run reports drift, not a fresh inventory.
 
@@ -106,6 +106,7 @@ Effort proportionate to consequence, which is the artifact's own thesis.
 - `scripts/validate.mjs`: schema, stage rules, recomputed totals, `--diff`
 - `scripts/render.mjs`: the one-page table
 - `scripts/test.mjs`: fixture estate, twice, plus validator negatives
+- `scripts/manifest.mjs`: per-file version and SHA-256 manifest; `--check` is a CI gate
 - `references/schema.json`: schema v0.3
 - `references/schema.md`: field notes in the order they bite
 - `references/prompt.md`: the model-agnostic prompt for INTERVIEW mode or a harness without this skill

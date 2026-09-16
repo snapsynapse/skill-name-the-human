@@ -128,12 +128,12 @@ files:
     hash: c169c76ad90821309b41377af9c65f81e2527cfc9a28551c91f93de0da9e4db3
   - path: references/prompt.md
     role: reference
-    version: 1
-    hash: 71f48281bb148ea69edcacf90de2be865503ab014380547365111d0fe0b967c3
+    version: 2
+    hash: c4490fa0641a6cb40507af6a669f0573f7e99c80b4e2565212060051ff85ffb8
   - path: references/schema.json
     role: reference
-    version: 1
-    hash: 39e6b8750746e7b2232b9703285095b9799b98640fd253ea43dd0cb3ff177868
+    version: 2
+    hash: 45be3f2329c21497ee9bfe672e04ac93d211195b71cd0949ab6a6d7ebe151064
   - path: references/schema.md
     role: reference
     version: 1
@@ -160,5 +160,5 @@ files:
     hash: 7ede9e21732e03bd1ff8215ab1909ab1dda8d4a6965a4b2c626bf9e711396155
   - path: SKILL.md
     role: skill
-    version: 2
-    hash: b088f3fcd09b43826a346ab88b9f9c37a5da4ba41efd819d18e301e455a364da
+    version: 3
+    hash: 064b6fd2661bf05605994cbc551e928d0ba08820ac9acc7ad92871c35315037f

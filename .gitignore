@@ -1,7 +1,7 @@
 .DS_Store
 .env
 .env.*
-.vercel
+.vercel/
 node_modules/
 __pycache__/
 *.pyc
@@ -17,6 +17,7 @@ handoffs/
 working/
 .playwright-mcp/
 .search-evidence-private/
+.perplexity-research/
 *.log
 tmp/
 # Your own inventory never belongs in this repo. Keep it next to your config, outside any clone.

@@ -39,7 +39,7 @@ RULES YOU DO NOT BREAK
 7. Do not guess. When the source does not show a detection path, write "not-determinable-from-source".
 
 OUTPUT
-Valid JSON matching the schema name-the-human/v0.3 at https://github.com/snapsynapse/skill-name-the-human/blob/main/name-the-human/references/schema.json, with a manifest of what you scanned, excluded and proposed, and a totals object where reviewed is the count and the other three are zero and reviewed respectively: named 0, killed 0, unnamed_still_running equal to reviewed. Then render it as a markdown table, one row per surface, nine columns: surface, unattended action, who finds out and how long, reach, accountable, fallback, can they stop it alone, last human check, verdict. Leave the last five columns for me.
+Valid JSON matching the schema name-the-human/v0.3 at https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/main/name-the-human/references/schema.json, with a manifest of what you scanned, excluded and proposed, and a totals object where reviewed is the count and the other three are zero and reviewed respectively: named 0, killed 0, unnamed_still_running equal to reviewed. Then render it as a markdown table, one row per surface, nine columns: surface, unattended action, who finds out and how long, reach, accountable, fallback, can they stop it alone, last human check, verdict. Leave the last five columns for me.
 Finish with the shortest list you can of the surfaces I should look at first, ordered by blast radius and then by detection lag, and say why each one is on that list.
 
 I do not need to give you any credentials, customer names, or secrets to do this, and you should not ask for any.
