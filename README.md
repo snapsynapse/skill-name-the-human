@@ -163,3 +163,9 @@ The responsibility-versus-accountability distinction this turns on came out of a
 ## Where this fits
 
 The method layer of a takeaway program at Signals & Subtractions. The show page for the takeaway is the layer that carries real numbers from a real pass; this repo is the schema's stable home and the tooling. Owned by Snap Synapse LLC, MIT licensed.
+
+## License
+
+MIT. See [LICENSE](LICENSE). Copyright Snap Synapse LLC.
+
+Issues and pull requests are welcome; `.github/PULL_REQUEST_TEMPLATE.md` carries the checklist that `INTENT.md` requires of a change. There is no `CONTRIBUTING.md` by decision, because the admission criteria in `INTENT.md` are the contribution rules and a second copy would drift from them.
