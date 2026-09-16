@@ -158,11 +158,11 @@ Claude Code and OpenAI Codex, on one macOS estate, by the author. Schema v0.3 ha
 
 ## Credit
 
-The responsibility-versus-accountability distinction this turns on came out of a conversation with Omar Ladak ahead of Signals & Subtractions Ep 12. The columns, the schema and the prior art are Sam's. Ep 12 and the show's own page for this will be linked here once they ship.
+The responsibility-versus-accountability distinction this turns on came out of a conversation with Omar Ladak ahead of Signals & Subtractions Ep 12. The columns, the schema and the prior art are Sam's. The show's page for this is live at [sigsub.show/takeaways/name-the-human](https://sigsub.show/takeaways/name-the-human/); Ep 12 will be linked here once it ships.
 
 ## Where this fits
 
-The method layer of a takeaway program at Signals & Subtractions. The show page for the takeaway is the layer that carries real numbers from a real pass; this repo is the schema's stable home and the tooling. Owned by Snap Synapse LLC, MIT licensed.
+The method layer of a takeaway program at Signals & Subtractions. The takeaway is at [sigsub.show/takeaways/name-the-human](https://sigsub.show/takeaways/name-the-human/), and it is the layer that carries real numbers from a real pass; this repo is the schema's stable home and the tooling. Owned by Snap Synapse LLC, MIT licensed.
 
 ## License
 
