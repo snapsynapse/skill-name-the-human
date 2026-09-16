@@ -29,10 +29,12 @@ Direct, unhedged, short declarative sentences. Comfortable naming limits and tra
 - Schema `$id` (raw, dereferenceable): https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/v0.1.0/name-the-human/references/schema.json
 - Prior art, the named-owner rule: https://sigsub.show/newsletter/the-handoff-gap/
 - Show: https://sigsub.show/
+- Takeaway page, the public home for this method, **not live until the Sunday send after Ep 12**: https://sigsub.show/takeaways/name-the-human/ (address registered in the show repo's `ARTIFACTS.md`, 2026-09-15)
 
 ## Current status
 
 - Version 0.1.0, schema `name-the-human/v0.3`. Consistent across `package.json`, `name-the-human/MANIFEST.yaml` and `INTENT.md`. No tags, no GitHub Releases yet.
 - Five scripts: `harvest.mjs`, `validate.mjs`, `render.mjs`, `test.mjs`, `manifest.mjs`. CI (`.github/workflows/validate.yml`) runs the fixture suite, the no-config refusal, and `manifest.mjs --check` across Node 22/24 on ubuntu and macOS.
 - Built and self-tested on one macOS estate. Schema v0.3 has not been exercised from Codex since the bump; `MANIFEST.yaml` `tested_on` is authoritative for what ran where.
+- The GitHub `homepageUrl` still points at https://sigsub.show/ and moves to the takeaway address once that page ships. The README's Credit and "Where this fits" sections both promise to link Ep 12 and the page "once each ships" and are still unfilled. `imgs/og.svg` deliberately carries no domain line until the page is live.
 - INTERVIEW mode (empty `paths_read`, `provenance.file` of `"interview"`) has no committed fixture and is described in prose only, so it can drift between `SKILL.md` and `prompt.md`.
