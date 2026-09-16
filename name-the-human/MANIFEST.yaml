@@ -1,0 +1,162 @@
+bundle: name-the-human
+bundle_version: 0.1.0
+bundle_date: 2026-09-15
+description: >
+  Deployer-side accountability inventory for automated and AI systems. A
+  read-only harvest over four location classes, a model judge that must cite
+  its evidence, a human-only naming pass, and a validator that recomputes the
+  totals. Schema name-the-human/v0.3.
+frontmatter_mode: minimal
+
+compatibility:
+  node: ">=22"
+  designed_for:
+    platform: Portable skill bundle (Claude Code, Codex)
+    surface: Code
+  tested_on:
+    - platform: Anthropic Claude
+      model: Claude Fable 5.1
+      surface: Code
+      status: pass
+      date: 2026-09-15
+      skill_version: 1
+      notes: >
+        Built and self-tested on the author's macOS estate. Fixture suite
+        passes; harvest run twice over the real estate with identical ids.
+    - platform: OpenAI Codex
+      surface: Code
+      status: partial
+      date: 2026-09-15
+      skill_version: 1
+      notes: >
+        The v0.2 prompt was run through Codex against the same estate and
+        produced the seventeen rows that motivated schema v0.3. The v0.3
+        bundle itself has not yet been exercised from Codex.
+
+deployments: []
+
+files:
+  - path: assets/example/inventory.judged.json
+    role: asset
+    version: 1
+    hash: f10f964d098306ee06b82ab0d93061b75006910b9c42fee3692dd95869ef2ad4
+  - path: assets/example/inventory.judged.md
+    role: asset
+    version: 1
+    hash: c6406e75bf64b5c63e60cf8e5b4abfb3446db8bf7fa4c7014a3022eb0ba525e3
+  - path: assets/example/inventory.named.json
+    role: asset
+    version: 1
+    hash: 32e7ddad99db808dd10f89fae070e5291806c4f85bbc16a4f9b339a31a5deb55
+  - path: assets/example/inventory.named.md
+    role: asset
+    version: 1
+    hash: 8e3dce08e03a3621f40461370f689c8be4dbcc1032d924872b119974aa6d5a07
+  - path: assets/fixture/estate/example-site/.codex/hooks.json
+    role: asset
+    version: 1
+    hash: b3a0240a6b36ee027abe3d0704fcc4b0494c91f68cf97945d5de5313855ef209
+  - path: assets/fixture/estate/example-site/.github/CODEOWNERS
+    role: asset
+    version: 1
+    hash: 72e4c4da4bfdad7907e32aaa4183ae0a58f9945fd5fc50f7b524637258ac7127
+  - path: assets/fixture/estate/example-site/.github/workflows/ci.yml
+    role: asset
+    version: 1
+    hash: 2f51fb46326c1ade964aff5b347cad74341691fb38a6eea029e5bed92adb7708
+  - path: assets/fixture/estate/example-site/.github/workflows/nightly-evals.yml
+    role: asset
+    version: 1
+    hash: e3710bdf6e48a91b95cf937b51b16ba1bb101f68c5d53435d4a9fb624bd22847
+  - path: assets/fixture/estate/example-site/api/cron/drain-outbox.js
+    role: asset
+    version: 1
+    hash: 233c337e17827877da2ea9148b805218d7cd94c25cd5b81fee0aedac29a33347
+  - path: assets/fixture/estate/example-site/scripts/install.sh
+    role: asset
+    version: 1
+    hash: 7052363a23128d5e37295106fd7ec755dd98666a2dcb0610456ee7ae117330a6
+  - path: assets/fixture/estate/example-site/vercel.json
+    role: asset
+    version: 1
+    hash: a8a03999704ddb905e1691507fd9e69411db36d702f1814c22f01fc5ade35517
+  - path: assets/fixture/estate/example-site/wrangler.toml
+    role: asset
+    version: 1
+    hash: d01378280acfb9805cade41802ba24a6bd19f0f513ce1147c131b4f796bff83d
+  - path: assets/fixture/estate/home/.claude/settings.json
+    role: asset
+    version: 1
+    hash: e90f0d5e2e7f413b113d2966c82624545eec528139459d53b410ee0f44965582
+  - path: assets/fixture/estate/launchagents/com.example.nightly-report.plist
+    role: asset
+    version: 1
+    hash: f97f3765de1f190bc2bde1be831763b7ea2322e69056846ce15868e26c04cdd0
+  - path: assets/fixture/estate/launchagents/com.example.retired.plist.disabled
+    role: asset
+    version: 1
+    hash: f650a03f29c6e1a38022494f991586bd11ba0759428965007b2ab74a89f0495a
+  - path: assets/fixture/estate/launchagents/com.example.vault-sync.plist
+    role: asset
+    version: 1
+    hash: 996adc94a2ef364c7a744de58e5dd05114f17a5cf74b2dfd49be1ada1c6dde00
+  - path: assets/fixture/estate/launchagents/com.vendor.updater.plist
+    role: asset
+    version: 1
+    hash: 39f309df609f810ffcb1e576f1f3f1a050871d56b664426aa155b14a2773f2b6
+  - path: assets/fixture/estate/tools/nightly-report.sh
+    role: asset
+    version: 1
+    hash: c48aa9bad640c7c424b6eabe379272a2b5d2fbecf9fe28a07f811a36f58c6b2a
+  - path: assets/fixture/estate/tools/vault-sync.sh
+    role: asset
+    version: 1
+    hash: 5b9117594f5ec95656d3a9a11914ee692ffd443535a4148b5b64803b8b4127bc
+  - path: assets/fixture/name-the-human.config.json
+    role: asset
+    version: 1
+    hash: e30bfe393bde5489e9e5112aebb3260c9080e57d5f7a7386c2b62e5231ccd1d5
+  - path: assets/fixture/README.md
+    role: asset
+    version: 1
+    hash: 87c0abeb961d2aa12f067bb2c6f6e597947c82cc70eaf18cdf3c7700679784d1
+  - path: CHANGELOG.md
+    role: reference
+    version: 1
+    hash: c169c76ad90821309b41377af9c65f81e2527cfc9a28551c91f93de0da9e4db3
+  - path: references/prompt.md
+    role: reference
+    version: 1
+    hash: 71f48281bb148ea69edcacf90de2be865503ab014380547365111d0fe0b967c3
+  - path: references/schema.json
+    role: reference
+    version: 1
+    hash: 39e6b8750746e7b2232b9703285095b9799b98640fd253ea43dd0cb3ff177868
+  - path: references/schema.md
+    role: reference
+    version: 1
+    hash: b0a925d4d9045f58cdebe68f58f7f2be7bdfdabeecb44960d6a485571507258c
+  - path: scripts/harvest.mjs
+    role: script
+    version: 2
+    hash: c00fd627985951ced785d9cc8198baaa088d31036e1823ba872e7db94a358c9a
+  - path: scripts/manifest.mjs
+    role: script
+    version: 1
+    hash: 87efcdb1d4faa23470b9481c5df78e8369e5d783eaa1b0c66143a526f6955f57
+  - path: scripts/render.mjs
+    role: script
+    version: 1
+    hash: 3c369d94ad5a80fdd5e1ee968463d42680288ac5818818e59697f31c41eaa074
+  - path: scripts/test.mjs
+    role: script
+    version: 1
+    hash: 9c61a3bc1dfb50b51236c51fc8da51ecbd4f32c9a004940677f9e195d0c15587
+  - path: scripts/validate.mjs
+    role: script
+    version: 1
+    hash: 7ede9e21732e03bd1ff8215ab1909ab1dda8d4a6965a4b2c626bf9e711396155
+  - path: SKILL.md
+    role: skill
+    version: 2
+    hash: b088f3fcd09b43826a346ab88b9f9c37a5da4ba41efd819d18e301e455a364da

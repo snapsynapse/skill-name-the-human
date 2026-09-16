@@ -1,0 +1,4 @@
+# Synthetic fixture. A Cloudflare Workers cron: not a v0.1 class, so it is proposed rather than walked.
+name = "example-edge"
+[triggers]
+crons = ["*/15 * * * *"]

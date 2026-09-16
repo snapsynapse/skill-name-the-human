@@ -1,0 +1,35 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: ['22', '24']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run the fixture and validator checks
+        run: node name-the-human/scripts/test.mjs
+      - name: Harvest refuses with no config
+        run: |
+          if node name-the-human/scripts/harvest.mjs --dry-run; then echo "harvest ran without a config"; exit 1; fi
+      - name: Manifest hashes match the files
+        run: node name-the-human/scripts/manifest.mjs --check

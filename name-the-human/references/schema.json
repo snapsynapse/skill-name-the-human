@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/snapsynapse/skill-name-the-human/blob/main/name-the-human/references/schema.json",
+  "title": "Name the Human inventory, schema v0.3",
+  "description": "One object per surface that acts on its output without a human deciding first. The machine harvests and judges; a human names. Fields the machine may never fill are marked human: true in their description.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generated", "scope_rule", "manifest", "surfaces", "triage", "totals"],
+  "properties": {
+    "schema": { "const": "name-the-human/v0.3" },
+    "generated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Date the file was last written, YYYY-MM-DD." },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "harvest": { "type": "string", "description": "Harvest script identity, for example harvest.mjs 0.1.0." },
+        "judge": { "type": ["string", "null"], "description": "Model and harness that filled the judgment fields, in the operator's words. Null until the Judge pass runs." }
+      }
+    },
+    "scope_rule": { "type": "string" },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scanned", "excluded", "proposed"],
+      "properties": {
+        "scanned": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["roots", "location_classes", "paths_read"],
+          "properties": {
+            "roots": { "type": "array", "items": { "type": "string" } },
+            "location_classes": { "type": "array", "items": { "$ref": "#/$defs/location_class" } },
+            "paths_read": { "type": "array", "items": { "type": "string" }, "description": "Every file the harvest opened, so a reader can see exactly what was touched." },
+            "counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "reason"],
+            "properties": {
+              "path": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "proposed": {
+          "type": "array",
+          "description": "Locations the harvest or the Judge noticed but was not given. They go nowhere until a human adds them to the config.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["location", "reason"],
+            "properties": {
+              "location": { "type": "string" },
+              "reason": { "type": "string" },
+              "proposed_by": { "type": "string", "enum": ["harvest", "judge", "human"] }
+            }
+          }
+        }
+      }
+    },
+    "surfaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/surface" }
+    },
+    "triage": {
+      "type": "array",
+      "description": "Surface ids in the order a human should look at them: by blast radius, then by detection lag. One line of reason each.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "reason"],
+        "properties": {
+          "id": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewed", "named", "killed", "unnamed_still_running"],
+      "properties": {
+        "reviewed": { "type": "integer", "minimum": 0 },
+        "named": { "type": "integer", "minimum": 0 },
+        "killed": { "type": "integer", "minimum": 0 },
+        "unnamed_still_running": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "gaps": {
+      "type": "object",
+      "description": "Optional. Count of null values per human field, for a reader who wants to see how much of the second pass is left.",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    }
+  },
+  "$defs": {
+    "location_class": {
+      "type": "string",
+      "enum": ["github-actions-schedule", "vercel-cron", "launchd-agent", "harness-hook"]
+    },
+    "basis": {
+      "type": ["string", "null"],
+      "description": "The line of evidence the judgment was made from, quoted short. Null only while the field it explains is null."
+    },
+    "judged_string": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "basis"],
+      "properties": {
+        "value": { "type": ["string", "null"] },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "class", "surface", "location", "schedule", "provenance",
+        "existing_owner_signal", "secret_names_referenced", "unattended_action",
+        "detection", "blast_radius", "moves_personal_data",
+        "accountable", "fallback", "stop_authority", "last_human_check", "verdict"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable across runs. Derived by the harvest from class, location and schedule, so run N can be diffed against run N-1."
+        },
+        "class": { "$ref": "#/$defs/location_class" },
+        "surface": {
+          "type": "string",
+          "description": "What it is, in the words you would use to a colleague. The harvest writes a mechanical placeholder; the Judge rewrites it."
+        },
+        "location": { "type": "string", "description": "Path, URL, or platform." },
+        "schedule": { "type": "string", "description": "The trigger as written: a cron expression, an interval in seconds, a calendar spec, or an event name." },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["file", "line", "excerpt"],
+          "properties": {
+            "file": { "type": "string" },
+            "line": { "type": ["integer", "null"], "minimum": 1 },
+            "excerpt": { "type": "string" },
+            "program": { "type": ["string", "null"], "description": "The program or handler the trigger invokes, when the source names one." }
+          }
+        },
+        "existing_owner_signal": {
+          "type": ["string", "null"],
+          "description": "What the repo or platform already claims about ownership: a CODEOWNERS entry, a catalog owner field. Evidence, never the answer. Null when nothing was found."
+        },
+        "secret_names_referenced": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Names only, never values. An env or secret name the source references."
+        },
+        "unattended_action": {
+          "$ref": "#/$defs/judged_string",
+          "description": "What it does when nobody is watching. Drafts and sends are different rows."
+        },
+        "detection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["who_finds_out", "lag", "basis"],
+          "properties": {
+            "who_finds_out": {
+              "type": ["string", "null"],
+              "description": "A person or system that notices when the output is wrong, or \"nobody\", or \"not-determinable-from-source\" when the source shows no detection path either way."
+            },
+            "lag": {
+              "type": ["string", "null"],
+              "enum": ["immediately", "next-run", "a-quarter", "never", "not-determinable-from-source", null]
+            },
+            "basis": { "$ref": "#/$defs/basis" }
+          }
+        },
+        "blast_radius": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "basis"],
+          "properties": {
+            "value": { "type": ["string", "null"], "enum": ["internal-draft", "internal-decision", "external", null] },
+            "basis": { "$ref": "#/$defs/basis" }
+          }
+        },
+        "moves_personal_data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "basis"],
+          "properties": {
+            "value": { "type": ["boolean", "null"] },
+            "basis": { "$ref": "#/$defs/basis" }
+          }
+        },
+        "accountable": {
+          "type": ["string", "null"],
+          "description": "human: true. A person's name. Not a team, not a role, not a rotation. The machine leaves this null."
+        },
+        "fallback": {
+          "type": ["string", "null"],
+          "description": "human: true. Who holds it when the accountable person is away or gone. Null, \"none\", or the same name all mean bus factor one."
+        },
+        "stop_authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["can_stop_alone", "how", "ever_tested"],
+          "properties": {
+            "can_stop_alone": { "type": ["boolean", "null"], "description": "human: true." },
+            "how": { "$ref": "#/$defs/judged_string", "description": "The actual mechanism, or \"unknown\". The Judge may fill this; it is a reading of the source, not a claim about a person." },
+            "ever_tested": { "type": ["boolean", "null"], "description": "human: true." }
+          }
+        },
+        "last_human_check": {
+          "type": ["string", "null"],
+          "description": "human: true. A date, or \"unknown\"."
+        },
+        "verdict": {
+          "type": "string",
+          "enum": ["keep", "name-it", "kill", "unresolved"],
+          "description": "human: true. Everything starts unresolved."
+        }
+      }
+    }
+  }
+}

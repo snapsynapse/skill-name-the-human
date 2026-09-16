@@ -1,0 +1,9 @@
+# Synthetic fixture. No schedule, so it is read and not a candidate.
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm test

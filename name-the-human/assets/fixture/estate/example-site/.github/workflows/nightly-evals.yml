@@ -1,0 +1,22 @@
+# Synthetic fixture. Two schedules in one file, because one workflow can carry
+# two different unattended actions: a read-only daily run and a weekly run that
+# writes synthetic records into a shared environment.
+name: nightly-evals
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+    - cron: '30 5 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      EVAL_API_KEY: ${{ secrets.EVAL_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/run-evals.mjs --mode ${{ github.event.schedule == '30 5 * * 0' && 'synthetic-write' || 'readonly' }}

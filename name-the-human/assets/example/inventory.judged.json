@@ -1,0 +1,457 @@
+{
+  "schema": "name-the-human/v0.3",
+  "generated": "2026-09-15",
+  "generator": {
+    "harvest": "harvest.mjs 0.1.0",
+    "judge": "synthetic: judgment fields written by hand for this example, not by a model"
+  },
+  "scope_rule": "A surface counts if something acts on its output without a human deciding first.",
+  "manifest": {
+    "scanned": {
+      "roots": [
+        "~/code/example-site",
+        "~/code/tools"
+      ],
+      "location_classes": [
+        "github-actions-schedule",
+        "vercel-cron",
+        "launchd-agent",
+        "harness-hook"
+      ],
+      "paths_read": [
+        "~/code/example-site/.codex/hooks.json",
+        "~/code/example-site/.github/CODEOWNERS",
+        "~/code/example-site/.github/workflows/ci.yml",
+        "~/code/example-site/.github/workflows/nightly-evals.yml",
+        "~/code/example-site/api/cron/drain-outbox.js",
+        "~/code/example-site/scripts/install.sh",
+        "~/code/example-site/vercel.json",
+        "~/code/example-site/wrangler.toml",
+        "~/.claude/settings.json",
+        "~/code/launchagents/com.example.nightly-report.plist",
+        "~/code/launchagents/com.example.vault-sync.plist",
+        "~/code/launchagents/com.vendor.updater.plist"
+      ],
+      "counts": {
+        "workflows_read": 2,
+        "vercel_json_read": 1,
+        "plists_read": 3,
+        "hook_files_read": 2,
+        "candidates": 8
+      }
+    },
+    "excluded": [
+      {
+        "path": "~/code/launchagents/com.example.retired.plist.disabled",
+        "reason": "not an active plist (renamed or disabled)"
+      },
+      {
+        "path": "~/code/launchagents/com.vendor.updater.plist",
+        "reason": "program ~/code/elsewhere/updater/updater is outside declared roots and include_paths"
+      }
+    ],
+    "proposed": [
+      {
+        "location": "~/code/example-site/wrangler.toml",
+        "reason": "wrangler config declares cron triggers; Cloudflare Workers cron is not a v0.1 class",
+        "proposed_by": "harvest"
+      },
+      {
+        "location": "~/code/example-site/scripts/install.sh",
+        "reason": "installer script references launchctl, crontab or systemctl; it may create a trigger the harvest did not see",
+        "proposed_by": "harvest"
+      },
+      {
+        "location": "~/code/example-site/scripts/run-evals.mjs",
+        "reason": "the eval script names a third-party eval service by env var; that service may run its own schedule",
+        "proposed_by": "judge"
+      }
+    ]
+  },
+  "surfaces": [
+    {
+      "id": "gha:example-site/.github/workflows/nightly-evals.yml@0_5_*_*_*",
+      "class": "github-actions-schedule",
+      "surface": "Daily eval run against the live product, read-only",
+      "location": "~/code/example-site/.github/workflows/nightly-evals.yml",
+      "schedule": "0 5 * * *",
+      "provenance": {
+        "file": "~/code/example-site/.github/workflows/nightly-evals.yml",
+        "line": 8,
+        "excerpt": "- cron: '0 5 * * *'",
+        "program": null
+      },
+      "existing_owner_signal": "CODEOWNERS ~/code/example-site/.github/CODEOWNERS:3 \"/.github/workflows/ @example-co/platform @example-co/evals\"",
+      "secret_names_referenced": [
+        "EVAL_API_KEY"
+      ],
+      "unattended_action": {
+        "value": "Runs the eval suite in readonly mode against production every morning and stores the scores",
+        "basis": "run-evals.mjs --mode readonly on schedule '0 5 * * *'"
+      },
+      "detection": {
+        "who_finds_out": "nobody",
+        "lag": "never",
+        "basis": "no notification step in the workflow; scores are written and not read by anyone the source names"
+      },
+      "blast_radius": {
+        "value": "internal-draft",
+        "basis": "readonly mode; output is a score file nobody acts on automatically"
+      },
+      "moves_personal_data": {
+        "value": false,
+        "basis": "readonly mode reads production but the workflow writes only scores"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "disable the workflow in the repository's Actions settings, or delete the schedule entry",
+          "basis": "nightly-evals.yml:8 - cron: '0 5 * * *'"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "gha:example-site/.github/workflows/nightly-evals.yml@30_5_*_*_0",
+      "class": "github-actions-schedule",
+      "surface": "Weekly eval run that writes synthetic records into the shared environment",
+      "location": "~/code/example-site/.github/workflows/nightly-evals.yml",
+      "schedule": "30 5 * * 0",
+      "provenance": {
+        "file": "~/code/example-site/.github/workflows/nightly-evals.yml",
+        "line": 9,
+        "excerpt": "- cron: '30 5 * * 0'",
+        "program": null
+      },
+      "existing_owner_signal": "CODEOWNERS ~/code/example-site/.github/CODEOWNERS:3 \"/.github/workflows/ @example-co/platform @example-co/evals\"",
+      "secret_names_referenced": [
+        "EVAL_API_KEY"
+      ],
+      "unattended_action": {
+        "value": "Every Sunday runs the eval suite in synthetic-write mode, which creates synthetic records in an environment real users share",
+        "basis": "schedule '30 5 * * 0' maps to --mode synthetic-write"
+      },
+      "detection": {
+        "who_finds_out": "not-determinable-from-source",
+        "lag": "not-determinable-from-source",
+        "basis": "the workflow has no failure notification and no cleanup step; whether anyone sees synthetic records is not visible from the source"
+      },
+      "blast_radius": {
+        "value": "internal-decision",
+        "basis": "synthetic records land in a shared environment where real cohorts are reported on"
+      },
+      "moves_personal_data": {
+        "value": true,
+        "basis": "writes into the same store that holds real cohort data; blast radius alone hides this"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "disable the workflow in the repository's Actions settings, or delete the schedule entry",
+          "basis": "nightly-evals.yml:9 - cron: '30 5 * * 0'"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "hook:claude:~/.claude/settings.json:PostToolUse:Bash:0.0",
+      "class": "harness-hook",
+      "surface": "Claude Code hook that records usage after every shell command",
+      "location": "~/.claude/settings.json",
+      "schedule": "event:PostToolUse:Bash",
+      "provenance": {
+        "file": "~/.claude/settings.json",
+        "line": 7,
+        "excerpt": "{ \"matcher\": \"Bash\", \"hooks\": [ { \"type\": \"command\", \"command\": \"~/tools/usage-capture.sh\", \"timeout\": 15 } ] }",
+        "program": "~/tools/usage-capture.sh"
+      },
+      "existing_owner_signal": null,
+      "secret_names_referenced": [],
+      "unattended_action": {
+        "value": "After every Bash tool call runs a capture script with a 15 second timeout",
+        "basis": "PostToolUse matcher Bash -> ~/tools/usage-capture.sh"
+      },
+      "detection": {
+        "who_finds_out": "not-determinable-from-source",
+        "lag": "not-determinable-from-source",
+        "basis": "the script's destination is not visible from settings.json"
+      },
+      "blast_radius": {
+        "value": "internal-draft",
+        "basis": "records usage for the operator; nothing downstream is named"
+      },
+      "moves_personal_data": {
+        "value": false,
+        "basis": "no personal data is named in the hook definition"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "remove the PostToolUse entry from ~/.claude/settings.json",
+          "basis": "hooks.PostToolUse[0].hooks[0]"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "hook:claude:~/.claude/settings.json:SessionEnd:*:0.0",
+      "class": "harness-hook",
+      "surface": "Claude Code hook that captures every session's end into a notes folder",
+      "location": "~/.claude/settings.json",
+      "schedule": "event:SessionEnd",
+      "provenance": {
+        "file": "~/.claude/settings.json",
+        "line": 4,
+        "excerpt": "{ \"hooks\": [ { \"type\": \"command\", \"command\": \"~/tools/session-capture.sh\" } ] }",
+        "program": "~/tools/session-capture.sh"
+      },
+      "existing_owner_signal": null,
+      "secret_names_referenced": [],
+      "unattended_action": {
+        "value": "At the end of every session writes a capture record to a personal notes folder",
+        "basis": "SessionEnd -> ~/tools/session-capture.sh"
+      },
+      "detection": {
+        "who_finds_out": "nobody",
+        "lag": "never",
+        "basis": "no reader of the capture folder is named anywhere in the source"
+      },
+      "blast_radius": {
+        "value": "internal-draft",
+        "basis": "writes a personal record; nothing downstream acts on it"
+      },
+      "moves_personal_data": {
+        "value": false,
+        "basis": "captures working directory and session metadata for the operator's own notes"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "remove the SessionEnd entry from ~/.claude/settings.json",
+          "basis": "hooks.SessionEnd[0].hooks[0]"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "hook:codex:~/code/example-site/.codex/hooks.json:PostToolUse:Edit|Write:0.0",
+      "class": "harness-hook",
+      "surface": "Codex hook that runs the test suite after every edit",
+      "location": "~/code/example-site/.codex/hooks.json",
+      "schedule": "event:PostToolUse:Edit|Write",
+      "provenance": {
+        "file": "~/code/example-site/.codex/hooks.json",
+        "line": 7,
+        "excerpt": "{ \"type\": \"command\", \"command\": \"sh -c 'npm test --silent 2>&1 | tail -3'\" }",
+        "program": null
+      },
+      "existing_owner_signal": null,
+      "secret_names_referenced": [],
+      "unattended_action": {
+        "value": "Runs npm test after each file edit and prints the last three lines back into the session",
+        "basis": "command: sh -c 'npm test --silent 2>&1 | tail -3'"
+      },
+      "detection": {
+        "who_finds_out": "the operator in the session",
+        "lag": "immediately",
+        "basis": "output returns to the session that triggered it"
+      },
+      "blast_radius": {
+        "value": "internal-draft",
+        "basis": "a test result shown to the person editing; nothing acts on it"
+      },
+      "moves_personal_data": {
+        "value": false,
+        "basis": "runs tests locally and prints output"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "remove the PostToolUse entry from ~/code/example-site/.codex/hooks.json",
+          "basis": "hooks.PostToolUse[0].hooks[0]"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "launchd:com.example.nightly-report@calendar:Hour=3,Minute=0",
+      "class": "launchd-agent",
+      "surface": "Nightly summary emailed to a team alias",
+      "location": "~/code/launchagents/com.example.nightly-report.plist",
+      "schedule": "calendar:Hour=3,Minute=0",
+      "provenance": {
+        "file": "~/code/launchagents/com.example.nightly-report.plist",
+        "line": 7,
+        "excerpt": "ProgramArguments: ~/code/tools/nightly-report.sh",
+        "program": "~/code/tools/nightly-report.sh"
+      },
+      "existing_owner_signal": null,
+      "secret_names_referenced": [
+        "REPORT_API_KEY"
+      ],
+      "unattended_action": {
+        "value": "At 03:00 generates a report and mails it to a team alias",
+        "basis": "nightly-report.sh: node ~/tools/report.mjs | mail -s Nightly team@example.invalid"
+      },
+      "detection": {
+        "who_finds_out": "not-determinable-from-source",
+        "lag": "not-determinable-from-source",
+        "basis": "the mail goes to an alias; whether anyone reads it is not visible from the source"
+      },
+      "blast_radius": {
+        "value": "internal-decision",
+        "basis": "a report mailed to a team is read as fact by whoever opens it"
+      },
+      "moves_personal_data": {
+        "value": false,
+        "basis": "the script pipes a generated summary; no personal data is named in the source"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "launchctl unload ~/code/launchagents/com.example.nightly-report.plist, or delete the plist",
+          "basis": "plist Label com.example.nightly-report"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "launchd:com.example.vault-sync@interval:3600s",
+      "class": "launchd-agent",
+      "surface": "Hourly sync of a personal notes folder into a shared folder",
+      "location": "~/code/launchagents/com.example.vault-sync.plist",
+      "schedule": "interval:3600s",
+      "provenance": {
+        "file": "~/code/launchagents/com.example.vault-sync.plist",
+        "line": 7,
+        "excerpt": "ProgramArguments: /bin/sh ~/code/tools/vault-sync.sh",
+        "program": "~/code/tools/vault-sync.sh"
+      },
+      "existing_owner_signal": null,
+      "secret_names_referenced": [],
+      "unattended_action": {
+        "value": "Every hour mirrors ~/notes into ~/shared/notes, so anything written privately is shared within the hour",
+        "basis": "vault-sync.sh: rsync -a ~/notes/ ~/shared/notes/"
+      },
+      "detection": {
+        "who_finds_out": "nobody",
+        "lag": "never",
+        "basis": "rsync output goes to /tmp/vault-sync.log; nothing reads the log"
+      },
+      "blast_radius": {
+        "value": "internal-decision",
+        "basis": "the shared folder is read by colleagues who act on its contents"
+      },
+      "moves_personal_data": {
+        "value": true,
+        "basis": "personal notes are copied to a shared location"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "launchctl unload ~/code/launchagents/com.example.vault-sync.plist, or delete the plist",
+          "basis": "plist Label com.example.vault-sync"
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    },
+    {
+      "id": "vercel:example-site/vercel.json@/api/cron/drain-outbox@0_7_*_*_*",
+      "class": "vercel-cron",
+      "surface": "Morning cron that sends every email queued overnight",
+      "location": "~/code/example-site/vercel.json",
+      "schedule": "0 7 * * *",
+      "provenance": {
+        "file": "~/code/example-site/vercel.json",
+        "line": 3,
+        "excerpt": "{ \"path\": \"/api/cron/drain-outbox\", \"schedule\": \"0 7 * * *\" }",
+        "program": "~/code/example-site/api/cron/drain-outbox.js"
+      },
+      "existing_owner_signal": "CODEOWNERS ~/code/example-site/.github/CODEOWNERS:4 \"/api/cron/ @example-co/growth\"",
+      "secret_names_referenced": [
+        "RESEND_API_KEY"
+      ],
+      "unattended_action": {
+        "value": "Reads the outbox and sends each queued email to its recipient with no human review between queue and send",
+        "basis": "drain-outbox.js: for (const row of rows) await send(row, key)"
+      },
+      "detection": {
+        "who_finds_out": "recipients",
+        "lag": "immediately",
+        "basis": "a wrong email is seen by the person who receives it; no internal check precedes the send"
+      },
+      "blast_radius": {
+        "value": "external",
+        "basis": "send(row, key) delivers to external recipients"
+      },
+      "moves_personal_data": {
+        "value": true,
+        "basis": "the outbox rows carry recipient addresses and message bodies"
+      },
+      "accountable": null,
+      "fallback": null,
+      "stop_authority": {
+        "can_stop_alone": null,
+        "how": {
+          "value": "remove the crons entry from vercel.json and redeploy, or disable the cron in the Vercel project settings",
+          "basis": "vercel.json crons entry \"/api/cron/drain-outbox\""
+        },
+        "ever_tested": null
+      },
+      "last_human_check": null,
+      "verdict": "unresolved"
+    }
+  ],
+  "triage": [
+    {
+      "id": "vercel:example-site/vercel.json@/api/cron/drain-outbox@0_7_*_*_*",
+      "reason": "external reach, moves personal data, and the only check is the recipient"
+    },
+    {
+      "id": "gha:example-site/.github/workflows/nightly-evals.yml@30_5_*_*_0",
+      "reason": "writes into a store with real cohorts and nothing in the source says who would notice"
+    },
+    {
+      "id": "launchd:com.example.vault-sync@interval:3600s",
+      "reason": "personal notes become shared within the hour and nothing reads the log"
+    },
+    {
+      "id": "launchd:com.example.nightly-report@calendar:Hour=3,Minute=0",
+      "reason": "a mailed report is read as fact and the source cannot say whether anyone reads it"
+    }
+  ],
+  "totals": {
+    "reviewed": 8,
+    "named": 0,
+    "killed": 0,
+    "unnamed_still_running": 8
+  }
+}

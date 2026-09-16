@@ -1,0 +1,8 @@
+{
+  "roots": ["./estate/example-site", "./estate/tools"],
+  "location_classes": ["github-actions-schedule", "vercel-cron", "launchd-agent", "harness-hook"],
+  "include_paths": [],
+  "home": "./estate/home",
+  "launch_agents_dir": "./estate/launchagents",
+  "max_depth": 6
+}

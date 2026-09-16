@@ -1,0 +1,28 @@
+.DS_Store
+.env
+.env.*
+.vercel
+node_modules/
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+dist/
+build/
+.venv/
+venv/
+.claude/
+.codex/
+handoffs/
+working/
+.playwright-mcp/
+.search-evidence-private/
+*.log
+tmp/
+# Your own inventory never belongs in this repo. Keep it next to your config, outside any clone.
+name-the-human.config.json
+name-the-human.*.json
+!name-the-human/assets/**/name-the-human.config.json
+# The fixture estate must use the real file names the harvest looks for.
+!name-the-human/assets/fixture/estate/home/.claude/
+!name-the-human/assets/fixture/estate/example-site/.codex/

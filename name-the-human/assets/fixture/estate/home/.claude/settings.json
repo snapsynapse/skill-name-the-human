@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      { "hooks": [ { "type": "command", "command": "~/tools/session-capture.sh" } ] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "~/tools/usage-capture.sh", "timeout": 15 } ] }
+    ]
+  }
+}

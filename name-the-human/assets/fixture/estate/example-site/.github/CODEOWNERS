@@ -1,0 +1,4 @@
+# Synthetic fixture. A team, not a person: evidence of a review rule, not of stop authority.
+*                     @example-co/platform
+/.github/workflows/   @example-co/platform @example-co/evals
+/api/cron/            @example-co/growth

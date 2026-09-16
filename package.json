@@ -1,0 +1,35 @@
+{
+  "name": "skill-name-the-human",
+  "version": "0.1.0",
+  "description": "A deployer-side accountability inventory for automated and AI systems. Harvest the surfaces that act without a human, judge their reach, and leave the naming to a person.",
+  "keywords": [
+    "accountability",
+    "ai-governance",
+    "inventory",
+    "human-oversight",
+    "agent-skill",
+    "claude-code",
+    "codex",
+    "launchd",
+    "github-actions",
+    "vercel-cron"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snapsynapse/skill-name-the-human.git"
+  },
+  "author": "Snap Synapse LLC <https://snapsynapse.com/>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "harvest": "node name-the-human/scripts/harvest.mjs",
+    "validate": "node name-the-human/scripts/validate.mjs",
+    "render": "node name-the-human/scripts/render.mjs",
+    "test": "node name-the-human/scripts/test.mjs",
+    "manifest": "node name-the-human/scripts/manifest.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
