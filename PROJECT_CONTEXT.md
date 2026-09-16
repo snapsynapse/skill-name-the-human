@@ -26,7 +26,7 @@ Direct, unhedged, short declarative sentences. Comfortable naming limits and tra
 ## Key URLs
 
 - Repo: https://github.com/snapsynapse/skill-name-the-human
-- Schema `$id` (raw, dereferenceable): https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/main/name-the-human/references/schema.json
+- Schema `$id` (raw, dereferenceable): https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/v0.1.0/name-the-human/references/schema.json
 - Prior art, the named-owner rule: https://sigsub.show/newsletter/the-handoff-gap/
 - Show: https://sigsub.show/
 

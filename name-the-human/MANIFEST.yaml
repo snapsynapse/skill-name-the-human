@@ -124,16 +124,16 @@ files:
     hash: 87c0abeb961d2aa12f067bb2c6f6e597947c82cc70eaf18cdf3c7700679784d1
   - path: CHANGELOG.md
     role: reference
-    version: 1
-    hash: c169c76ad90821309b41377af9c65f81e2527cfc9a28551c91f93de0da9e4db3
+    version: 2
+    hash: 9d9dd9be0094b577dd6f31207696f6950401111a6ca04730db29023cda3c3c72
   - path: references/prompt.md
     role: reference
-    version: 2
-    hash: c4490fa0641a6cb40507af6a669f0573f7e99c80b4e2565212060051ff85ffb8
+    version: 3
+    hash: bfe98855fe5a6b6fe4a12388d5667d4108f1809030f8c6e4043198ec42e28ca8
   - path: references/schema.json
     role: reference
-    version: 2
-    hash: 45be3f2329c21497ee9bfe672e04ac93d211195b71cd0949ab6a6d7ebe151064
+    version: 3
+    hash: a9dfe3c782dbf190b1965325e485baf23b1a4a766c722239f7eecddabed10dc1
   - path: references/schema.md
     role: reference
     version: 1

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/main/name-the-human/references/schema.json",
+  "$id": "https://raw.githubusercontent.com/snapsynapse/skill-name-the-human/v0.1.0/name-the-human/references/schema.json",
   "title": "Name the Human inventory, schema v0.3",
   "description": "One object per surface that acts on its output without a human deciding first. The machine harvests and judges; a human names. Fields the machine may never fill are marked human: true in their description.",
   "type": "object",
