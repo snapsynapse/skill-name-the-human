@@ -48,9 +48,11 @@ compatibility:
       date: 2026-09-15
       skill_version: 1
       notes: >
-        The v0.2 prompt was run through Codex against the same estate and
-        produced the seventeen rows that motivated schema v0.3. The v0.3
-        bundle itself has not yet been exercised from Codex.
+        The v0.2 prompt was run through Codex (GPT 5.6 Terra Light) on
+        2026-09-15 against the same estate and produced seventeen surfaces
+        (GitHub Actions and Vercel only; it missed launchd agents and hooks).
+        That run motivated every schema v0.3 delta. The v0.3 bundle itself
+        has not yet been exercised from Codex.
 
 deployments: []
 
